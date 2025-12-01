@@ -11,8 +11,11 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "pnpm eslint --fix",
+      "pnpm prettier --write"
+    ],
+    "*.{md,json,css,scss}": [
+      "pnpm prettier --write"
     ]
   },
   "dependencies": {
