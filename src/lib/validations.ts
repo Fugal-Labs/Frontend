@@ -7,9 +7,7 @@ export const registrationSchema = z.object({
   college: z.string().min(2, "College name is required"),
   year: z.string().min(1, "Year of study is required"),
   github: z.string().url("Invalid URL").optional().or(z.literal("")),
-  track: z.enum(["web", "mobile", "ai", "blockchain", "iot", "open"], {
-    errorMap: () => ({ message: "Please select a valid track" }),
-  }),
+  track: z.enum(["web", "mobile", "ai", "blockchain", "iot", "open"]),
 });
 
 export type RegistrationData = z.infer<typeof registrationSchema>;
