@@ -33,7 +33,7 @@ export default function Hero() {
         {/* CTA */}
         <button
           onClick={scrollToRegister}
-          className="mt-8 sm:mt-10 bg-[#ff2c2c] text-white px-8 sm:px-12! py-3.5 sm:py-4! rounded-full text-base sm:text-lg font-bold 
+          className="mt-8 sm:mt-10 bg-[#ff2c2c] text-white px-8! sm:px-12! py-3.5! sm:py-4! rounded-full text-base sm:text-lg font-bold 
           hover:bg-[#e62828] transition-all hover:scale-[1.06] active:scale-95 hover:shadow-[0_0_20px_#ff2c2c90] shadow-lg animate-fade-in-up [animation-delay:0.25s]"
         >
           Register Now
