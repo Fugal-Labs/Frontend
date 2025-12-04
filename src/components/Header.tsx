@@ -63,7 +63,7 @@ export default function Header() {
           <div className="hidden md:block">
             <button
               onClick={() => scrollToSection("register")}
-              className="bg-[#ff2c2c] text-white px-6! py-2.5! rounded-full hover:bg-[#e62828] transition-all font-semibold shadow-md hover:shadow-[#ff2c2c]/40"
+              className="bg-[#ff2c2c] text-white px-6 py-2.5 rounded-full hover:bg-[#e62828] transition-all font-semibold shadow-md hover:shadow-[#ff2c2c]/40"
             >
               Register
             </button>
@@ -72,7 +72,7 @@ export default function Header() {
           {/* Mobile Register Button */}
           <button
             onClick={() => scrollToSection("register")}
-            className="md:hidden bg-[#ff2c2c] text-white px-5! py-2.5! text-sm rounded-full hover:bg-[#e62828] transition-all font-semibold shadow active:scale-95"
+            className="md:hidden bg-[#ff2c2c] text-white px-5 py-2.5 text-sm rounded-full hover:bg-[#e62828] transition-all font-semibold shadow active:scale-95"
           >
             Register
           </button>
