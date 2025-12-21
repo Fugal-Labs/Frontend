@@ -1,20 +1,164 @@
 @import "tailwindcss";
 
+/* =========================
+   THEME VARIABLES
+   ========================= */
+
+/* =========================
+   DEFAULT: DARK MODE
+   ========================= */
 :root {
+  /* =========================
+     BRAND COLORS
+     ========================= */
   --primary-red: #ff2c2c;
-  --primary-black: #0a0a0a;
-  --text-light: #ffffff;
-  --text-muted: #bbbbbb;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-cyan: #22d3ee;
+
+  /* =========================
+     STATUS COLORS
+     ========================= */
+  --success-green: #22c55e;
+  --warning-yellow: #facc15;
+  --error-red: #ef4444;
+  --info-blue: #38bdf8;
+
+  /* =========================
+     PROBLEM DIFFICULTY
+     ========================= */
+  --difficulty-easy: #22c55e;
+  --difficulty-medium: #facc15;
+  --difficulty-hard: #ef4444;
+
+  /* =========================
+     BACKGROUNDS
+     ========================= */
   --background: #0a0a0a;
+  --background-elevated: #111111;
+  --background-hover: #181818;
+  --background-glass: rgba(255, 255, 255, 0.05);
+  --border-subtle: #222222;
+  --border-strong: #333333;
+
+  /* =========================
+     TEXT
+     ========================= */
   --foreground: #ffffff;
+  --text-light: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --text-disabled: #6b7280;
+  --text-inverse: #0a0a0a;
+
+  /* =========================
+     BUTTONS
+     ========================= */
+  --btn-primary-bg: var(--primary-red);
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #e11d1d;
+
+  --btn-secondary-bg: #1f2933;
+  --btn-secondary-text: #ffffff;
+  --btn-secondary-hover: #374151;
+
+  /* =========================
+     BADGES / TAGS
+     ========================= */
+  --badge-bg: #1f2937;
+  --badge-text: #e5e7eb;
+
+  --badge-live: var(--primary-red);
+  --badge-upcoming: var(--accent-purple);
+  --badge-completed: var(--success-green);
+
+  /* =========================
+     CARDS
+     ========================= */
+  --card-bg: var(--background-elevated);
+  --card-hover: var(--background-hover);
+  --card-border: var(--border-subtle);
+
+  /* =========================
+     INPUTS / FORMS
+     ========================= */
+  --input-bg: #0f0f0f;
+  --input-border: #2a2a2a;
+  --input-focus: var(--accent-blue);
+  --input-text: #ffffff;
+  --input-placeholder: #6b7280;
+
+  /* =========================
+     SHADOWS
+     ========================= */
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-glow-red: 0 0 20px rgba(255, 44, 44, 0.35);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.35);
+
+  /* =========================
+     TAILWIND BINDINGS
+     ========================= */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary-red: var(--primary-red);
-  --color-primary-black: var(--primary-black);
+
+  /* =========================
+     FONTS
+     ========================= */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+/* =========================
+   LIGHT MODE
+   ========================= */
+[data-theme="light"] {
+  /* Backgrounds */
+  --background: #ffffff;
+  --background-elevated: #f9fafb;
+  --background-hover: #f3f4f6;
+  --background-glass: rgba(0, 0, 0, 0.03);
+  --border-subtle: #e5e7eb;
+  --border-strong: #d1d5db;
+
+  /* Text */
+  --foreground: #0a0a0a;
+  --text-light: #0a0a0a;
+  --text-secondary: #374151;
+  --text-muted: #4b5563;
+  --text-disabled: #9ca3af;
+  --text-inverse: #ffffff;
+
+  /* Cards */
+  --card-bg: #ffffff;
+  --card-hover: #f3f4f6;
+
+  /* Inputs */
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --input-text: #0a0a0a;
+  --input-placeholder: #9ca3af;
+}
+
+/* =========================
+   AUTO SYSTEM LIGHT MODE
+   ========================= */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --background: #ffffff;
+    --background-elevated: #f9fafb;
+    --background-hover: #f3f4f6;
+    --border-subtle: #e5e7eb;
+
+    --foreground: #0a0a0a;
+    --text-light: #0a0a0a;
+    --text-muted: #4b5563;
+  }
+}
+
+/* =========================
+   GLOBAL STYLES
+   ========================= */
 body {
   background: var(--background);
   color: var(--foreground);
@@ -25,6 +169,45 @@ html {
   scroll-behavior: smooth;
 }
 
+/* =========================
+   TAILWIND LAYER UTILITIES
+   ========================= */
+@layer utilities {
+  .bg-background {
+    background-color: var(--background);
+  }
+  .bg-background-elevated {
+    background-color: var(--background-elevated);
+  }
+  .bg-background-hover {
+    background-color: var(--background-hover);
+  }
+  .text-primary-red {
+    color: var(--primary-red);
+  }
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+  .text-muted {
+    color: var(--text-muted);
+  }
+  .border-primary-red {
+    border-color: var(--primary-red);
+  }
+  .bg-primary-red {
+    background-color: var(--primary-red);
+  }
+  .bg-btn-primary-hover {
+    background-color: var(--btn-primary-hover);
+  }
+  .shadow-glow-red {
+    box-shadow: var(--shadow-glow-red);
+  }
+}
+
+/* =========================
+   ANIMATIONS
+   ========================= */
 @keyframes fadeInUp {
   from {
     opacity: 0;
