@@ -9,6 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://fugallabs.com"),
   title: "Fugal Labs - Dev-First Social Platform & Hackathons",
   description:
     "Join Fugal Labs, a dev-first social platform for college developers. Participate in high-impact hackathons, build amazing projects, and connect with a vibrant community of innovators.",
