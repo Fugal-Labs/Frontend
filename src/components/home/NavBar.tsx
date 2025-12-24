@@ -4,11 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
-import { ThemeToggleButton } from "../ui/theme-toggle";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 
 const HamburgerMenu = dynamic(() => import("./HamburgerMenu"), { ssr: false });
+const ThemeToggleButton = dynamic(
+  () => import("../ui/theme-toggle").then((m) => m.ThemeToggleButton),
+  { ssr: false }
+);
 
 const navItems: NavItems[] = [
   {
