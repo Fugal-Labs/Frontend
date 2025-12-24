@@ -1,15 +1,18 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 /* =========================
    THEME VARIABLES
    ========================= */
 
 /* =========================
-   DEFAULT: DARK MODE
+   DEFAULT: LIGHT MODE
    ========================= */
 :root {
   /* =========================
-     BRAND COLORS
+     BRAND COLORS (theme-independent)
      ========================= */
   --primary-red: #ff2c2c;
   --accent-blue: #3b82f6;
@@ -17,7 +20,7 @@
   --accent-cyan: #22d3ee;
 
   /* =========================
-     STATUS COLORS
+     STATUS COLORS (theme-independent)
      ========================= */
   --success-green: #22c55e;
   --warning-yellow: #facc15;
@@ -25,75 +28,73 @@
   --info-blue: #38bdf8;
 
   /* =========================
-     PROBLEM DIFFICULTY
+     PROBLEM DIFFICULTY (theme-independent)
      ========================= */
   --difficulty-easy: #22c55e;
   --difficulty-medium: #facc15;
   --difficulty-hard: #ef4444;
 
   /* =========================
-     BACKGROUNDS
+     BACKGROUNDS (light mode)
      ========================= */
-  --background: #0a0a0a;
-  --background-elevated: #111111;
-  --background-hover: #181818;
-  --background-glass: rgba(255, 255, 255, 0.05);
-  --border-subtle: #222222;
-  --border-strong: #333333;
+  --background-elevated: #f9fafb;
+  --background-hover: #f3f4f6;
+  --background-glass: rgba(0, 0, 0, 0.03);
+  --border-subtle: #e5e7eb;
+  --border-strong: #d1d5db;
 
   /* =========================
-     TEXT
+     TEXT (light mode)
      ========================= */
-  --foreground: #ffffff;
-  --text-light: #ffffff;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --text-disabled: #6b7280;
-  --text-inverse: #0a0a0a;
+  --text-light: #0a0a0a;
+  --text-secondary: #374151;
+  --text-muted: #4b5563;
+  --text-disabled: #9ca3af;
+  --text-inverse: #ffffff;
 
   /* =========================
-     BUTTONS
+     BUTTONS (light mode)
      ========================= */
   --btn-primary-bg: var(--primary-red);
   --btn-primary-text: #ffffff;
   --btn-primary-hover: #e11d1d;
 
-  --btn-secondary-bg: #1f2933;
-  --btn-secondary-text: #ffffff;
-  --btn-secondary-hover: #374151;
+  --btn-secondary-bg: #e5e7eb;
+  --btn-secondary-text: #0a0a0a;
+  --btn-secondary-hover: #d1d5db;
 
   /* =========================
-     BADGES / TAGS
+     BADGES / TAGS (light mode)
      ========================= */
-  --badge-bg: #1f2937;
-  --badge-text: #e5e7eb;
+  --badge-bg: #f3f4f6;
+  --badge-text: #374151;
 
   --badge-live: var(--primary-red);
   --badge-upcoming: var(--accent-purple);
   --badge-completed: var(--success-green);
 
   /* =========================
-     CARDS
+     CARDS (light mode)
      ========================= */
-  --card-bg: var(--background-elevated);
-  --card-hover: var(--background-hover);
+  --card-bg: #ffffff;
+  --card-hover: #f9fafb;
   --card-border: var(--border-subtle);
 
   /* =========================
-     INPUTS / FORMS
+     INPUTS / FORMS (light mode)
      ========================= */
-  --input-bg: #0f0f0f;
-  --input-border: #2a2a2a;
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
   --input-focus: var(--accent-blue);
-  --input-text: #ffffff;
-  --input-placeholder: #6b7280;
+  --input-text: #0a0a0a;
+  --input-placeholder: #9ca3af;
 
   /* =========================
-     SHADOWS
+     SHADOWS (light mode)
      ========================= */
-  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-glow-red: 0 0 20px rgba(255, 44, 44, 0.35);
-  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.35);
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-glow-red: 0 0 20px rgba(255, 44, 44, 0.2);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.2);
 
   /* =========================
      TAILWIND BINDINGS
@@ -107,61 +108,101 @@
      ========================= */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.13 0.028 261.692);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.13 0.028 261.692);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.028 261.692);
+  --primary: oklch(0.21 0.034 264.665);
+  --primary-foreground: oklch(0.985 0.002 247.839);
+  --secondary: oklch(0.967 0.003 264.542);
+  --secondary-foreground: oklch(0.21 0.034 264.665);
+  --muted: oklch(0.967 0.003 264.542);
+  --muted-foreground: oklch(0.551 0.027 264.364);
+  --accent: oklch(0.967 0.003 264.542);
+  --accent-foreground: oklch(0.21 0.034 264.665);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.928 0.006 264.531);
+  --input: oklch(0.928 0.006 264.531);
+  --ring: oklch(0.707 0.022 261.325);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0.002 247.839);
+  --sidebar-foreground: oklch(0.13 0.028 261.692);
+  --sidebar-primary: oklch(0.21 0.034 264.665);
+  --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
+  --sidebar-accent: oklch(0.967 0.003 264.542);
+  --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
+  --sidebar-border: oklch(0.928 0.006 264.531);
+  --sidebar-ring: oklch(0.707 0.022 261.325);
 }
 
 /* =========================
-   LIGHT MODE
+   DARK MODE
    ========================= */
-[data-theme="light"] {
-  /* Backgrounds */
-  --background: #ffffff;
-  --background-elevated: #f9fafb;
-  --background-hover: #f3f4f6;
-  --background-glass: rgba(0, 0, 0, 0.03);
-  --border-subtle: #e5e7eb;
-  --border-strong: #d1d5db;
+.dark {
+  /* =========================
+     BACKGROUNDS (dark mode)
+     ========================= */
+  --background-elevated: #111111;
+  --background-hover: #181818;
+  --background-glass: rgba(255, 255, 255, 0.05);
+  --border-subtle: #222222;
+  --border-strong: #333333;
 
-  /* Text */
-  --foreground: #0a0a0a;
-  --text-light: #0a0a0a;
-  --text-secondary: #374151;
-  --text-muted: #4b5563;
-  --text-disabled: #9ca3af;
-  --text-inverse: #ffffff;
+  /* =========================
+     TEXT (dark mode)
+     ========================= */
+  --text-light: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --text-disabled: #6b7280;
+  --text-inverse: #0a0a0a;
 
-  /* Cards */
-  --card-bg: #ffffff;
-  --card-hover: #f3f4f6;
+  /* =========================
+     BUTTONS (dark mode)
+     ========================= */
+  --btn-secondary-bg: #1f2933;
+  --btn-secondary-text: #ffffff;
+  --btn-secondary-hover: #374151;
 
-  /* Inputs */
-  --input-bg: #ffffff;
-  --input-border: #d1d5db;
-  --input-text: #0a0a0a;
-  --input-placeholder: #9ca3af;
-}
+  /* =========================
+     BADGES / TAGS (dark mode)
+     ========================= */
+  --badge-bg: #1f2937;
+  --badge-text: #e5e7eb;
 
-/* =========================
-   AUTO SYSTEM LIGHT MODE
-   ========================= */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme]) {
-    --background: #ffffff;
-    --background-elevated: #f9fafb;
-    --background-hover: #f3f4f6;
-    --border-subtle: #e5e7eb;
+  /* =========================
+     CARDS (dark mode)
+     ========================= */
+  --card-bg: var(--background-elevated);
+  --card-hover: var(--background-hover);
 
-    --foreground: #0a0a0a;
-    --text-light: #0a0a0a;
-    --text-muted: #4b5563;
-  }
+  /* =========================
+     INPUTS / FORMS (dark mode)
+     ========================= */
+  --input-bg: #0f0f0f;
+  --input-border: #2a2a2a;
+  --input-text: #ffffff;
+  --input-placeholder: #6b7280;
+
+  /* =========================
+     SHADOWS (dark mode)
+     ========================= */
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-glow-red: 0 0 20px rgba(255, 44, 44, 0.35);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.35);
 }
 
 /* =========================
    GLOBAL STYLES
    ========================= */
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
@@ -234,4 +275,179 @@ html {
 
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out forwards;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* =========================
+   TAILWIND DARK MODE THEME
+   ========================= */
+@media (prefers-color-scheme: system) {
+  :root {
+    --background: oklch(0.13 0.028 261.692);
+    --foreground: oklch(0.985 0.002 247.839);
+    --card: oklch(0.21 0.034 264.665);
+    --card-foreground: oklch(0.985 0.002 247.839);
+    --popover: oklch(0.21 0.034 264.665);
+    --popover-foreground: oklch(0.985 0.002 247.839);
+    --primary: oklch(0.928 0.006 264.531);
+    --primary-foreground: oklch(0.21 0.034 264.665);
+    --secondary: oklch(0.278 0.033 256.848);
+    --secondary-foreground: oklch(0.985 0.002 247.839);
+    --muted: oklch(0.278 0.033 256.848);
+    --muted-foreground: oklch(0.707 0.022 261.325);
+    --accent: oklch(0.278 0.033 256.848);
+    --accent-foreground: oklch(0.985 0.002 247.839);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.551 0.027 264.364);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: oklch(0.21 0.034 264.665);
+    --sidebar-foreground: oklch(0.985 0.002 247.839);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
+    --sidebar-accent: oklch(0.278 0.033 256.848);
+    --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.551 0.027 264.364);
+  }
+}
+
+.dark {
+  --background: oklch(0.13 0.028 261.692);
+  --foreground: oklch(0.985 0.002 247.839);
+  --card: oklch(0.21 0.034 264.665);
+  --card-foreground: oklch(0.985 0.002 247.839);
+  --popover: oklch(0.21 0.034 264.665);
+  --popover-foreground: oklch(0.985 0.002 247.839);
+  --primary: oklch(0.928 0.006 264.531);
+  --primary-foreground: oklch(0.21 0.034 264.665);
+  --secondary: oklch(0.278 0.033 256.848);
+  --secondary-foreground: oklch(0.985 0.002 247.839);
+  --muted: oklch(0.278 0.033 256.848);
+  --muted-foreground: oklch(0.707 0.022 261.325);
+  --accent: oklch(0.278 0.033 256.848);
+  --accent-foreground: oklch(0.985 0.002 247.839);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.21 0.034 264.665);
+  --sidebar-foreground: oklch(0.985 0.002 247.839);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
+  --sidebar-accent: oklch(0.278 0.033 256.848);
+  --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+
+  /* =========================
+     BACKGROUNDS (dark mode)
+     ========================= */
+  --background-elevated: #111111;
+  --background-hover: #181818;
+  --background-glass: rgba(255, 255, 255, 0.05);
+  --border-subtle: #222222;
+  --border-strong: #333333;
+
+  /* =========================
+     TEXT (dark mode)
+     ========================= */
+  --text-light: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --text-disabled: #6b7280;
+  --text-inverse: #0a0a0a;
+
+  /* =========================
+     BUTTONS (dark mode)
+     ========================= */
+  --btn-secondary-bg: #1f2933;
+  --btn-secondary-text: #ffffff;
+  --btn-secondary-hover: #374151;
+
+  /* =========================
+     BADGES / TAGS (dark mode)
+     ========================= */
+  --badge-bg: #1f2937;
+  --badge-text: #e5e7eb;
+
+  /* =========================
+     CARDS (dark mode)
+     ========================= */
+  --card-bg: var(--background-elevated);
+  --card-hover: var(--background-hover);
+
+  /* =========================
+     INPUTS / FORMS (dark mode)
+     ========================= */
+  --input-bg: #0f0f0f;
+  --input-border: #2a2a2a;
+  --input-text: #ffffff;
+  --input-placeholder: #6b7280;
+
+  /* =========================
+     SHADOWS (dark mode)
+     ========================= */
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-glow-red: 0 0 20px rgba(255, 44, 44, 0.35);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.35);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
