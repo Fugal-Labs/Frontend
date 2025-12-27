@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import { ThemeToggleButton } from "../ui/theme-toggle";
+import { useRouter } from "next/navigation";
 
 const navItems: NavItems[] = [
   {
@@ -35,6 +36,7 @@ export default function HamburgerMenu({
   open: boolean;
   onClose: () => void;
 }) {
+  const router = useRouter();
   const pathname = usePathname();
   return (
     <div
@@ -70,11 +72,20 @@ export default function HamburgerMenu({
             <Button
               variant="outline"
               className="flex-1 min-w-0"
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                router.push("/login");
+              }}
             >
               Log In
             </Button>
-            <Button className="flex-1 min-w-0" onClick={onClose}>
+            <Button
+              className="flex-1 min-w-0"
+              onClick={() => {
+                onClose();
+                router.push("/signup");
+              }}
+            >
               Sign Up
             </Button>
           </div>

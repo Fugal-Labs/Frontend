@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 
 const HamburgerMenu = dynamic(() => import("./HamburgerMenu"), { ssr: false });
 const ThemeToggleButton = dynamic(
@@ -39,6 +40,8 @@ const navItems: NavItems[] = [
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-background/95 border border-b-accent p-4 shadow-md z-10">
       <div className="flex justify-between items-center max-w-7xl mx-auto">
@@ -70,10 +73,19 @@ export default function NavBar() {
         {/* Desktop Buttons */}
         <div className="hidden sm:flex flex-row gap-2 items-center">
           <ThemeToggleButton />
-          <Button variant="outline" className="cursor-pointer">
+          <Button
+            variant="outline"
+            className="cursor-pointer"
+            onClick={() => router.push("/login")}
+          >
             Log In
           </Button>
-          <Button className="ml-2 cursor-pointer">Sign Up</Button>
+          <Button
+            className="ml-2 cursor-pointer"
+            onClick={() => router.push("/signup")}
+          >
+            Sign Up
+          </Button>
         </div>
         {/* Hamburger Icon for Mobile */}
         <button
