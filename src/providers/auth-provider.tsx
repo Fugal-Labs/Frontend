@@ -26,16 +26,24 @@ export default function AuthProvider({
     if (!user) return;
 
     const REFRESH_INTERVAL = 14 * 60 * 1000; // 14 minutes
+    let isMounted = true;
 
     const intervalId = setInterval(async () => {
+      if (!isMounted) {
+        return;
+      }
       try {
         await refreshToken();
       } catch (error) {
+        if (!isMounted) {
+          return;
+        }
         console.error("[AuthProvider] Token refresh failed:", error);
       }
     }, REFRESH_INTERVAL);
 
     return () => {
+      isMounted = false;
       clearInterval(intervalId);
     };
   }, [user, refreshToken]);
