@@ -5,9 +5,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginSchema } from "@/schemas/auth.schema";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/auth-store";
 
 export default function LoginForm() {
   const router = useRouter();
+  const loginUser = useAuthStore((s) => s.loginUser);
 
   const {
     register,
@@ -19,7 +21,16 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: LoginSchema) => {
-    console.log(data);
+    try {
+      await loginUser({
+        credential: data.emailOrUsername,
+        password: data.password,
+      });
+      router.push("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Handle error (e.g., show notification)
+    }
   };
 
   return (
