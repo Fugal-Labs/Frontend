@@ -3,6 +3,68 @@
 import { useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 
+// Particle class definition outside component
+class Particle {
+  x: number;
+  y: number;
+  baseX: number;
+  baseY: number;
+  vx: number;
+  vy: number;
+  size: number;
+  opacity: number;
+
+  constructor(canvas: HTMLCanvasElement) {
+    this.baseX = Math.random() * canvas.width;
+    this.baseY = Math.random() * canvas.height;
+    this.x = this.baseX;
+    this.y = this.baseY;
+    const speed = 0.15;
+    const angle = Math.random() * Math.PI * 2;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed;
+    const sizeType = Math.random();
+    if (sizeType < 0.5) {
+      this.size = Math.random() * 25 + 25;
+    } else if (sizeType < 0.85) {
+      this.size = Math.random() * 29 + 51;
+    } else {
+      this.size = Math.random() * 29 + 71;
+    }
+    this.opacity = Math.random() * 0.28 + 0.18;
+  }
+
+  update(mouseX: number, mouseY: number, canvas: HTMLCanvasElement) {
+    this.x += (this.baseX - this.x) * 0.05;
+    this.y += (this.baseY - this.y) * 0.05;
+    this.x += this.vx;
+    this.y += this.vy;
+    const dx = mouseX - this.x;
+    const dy = mouseY - this.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const maxDistance = 150;
+    if (distance < maxDistance) {
+      const force = (maxDistance - distance) / maxDistance;
+      this.x -= dx * force * 0.03;
+      this.y -= dy * force * 0.03;
+    }
+    if (this.baseX < 0) this.baseX = canvas.width;
+    if (this.baseX > canvas.width) this.baseX = 0;
+    if (this.baseY < 0) this.baseY = canvas.height;
+    if (this.baseY > canvas.height) this.baseY = 0;
+    this.baseX += this.vx;
+    this.baseY += this.vy;
+  }
+
+  draw(ctx: CanvasRenderingContext2D, isDark: boolean) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    const color = isDark ? "255, 44, 44" : "239, 68, 68";
+    ctx.fillStyle = `rgba(${color}, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
 export default function InteractiveBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { theme } = useTheme();
@@ -25,68 +87,6 @@ export default function InteractiveBackground() {
     };
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
-
-    // Particle class moved fully outside the component and effect
-    class Particle {
-      x: number;
-      y: number;
-      baseX: number;
-      baseY: number;
-      vx: number;
-      vy: number;
-      size: number;
-      opacity: number;
-
-      constructor(canvas: HTMLCanvasElement) {
-        this.baseX = Math.random() * canvas.width;
-        this.baseY = Math.random() * canvas.height;
-        this.x = this.baseX;
-        this.y = this.baseY;
-        const speed = 0.15;
-        const angle = Math.random() * Math.PI * 2;
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
-        const sizeType = Math.random();
-        if (sizeType < 0.5) {
-          this.size = Math.random() * 25 + 25;
-        } else if (sizeType < 0.85) {
-          this.size = Math.random() * 29 + 51;
-        } else {
-          this.size = Math.random() * 29 + 71;
-        }
-        this.opacity = Math.random() * 0.28 + 0.18;
-      }
-
-      update(mouseX: number, mouseY: number, canvas: HTMLCanvasElement) {
-        this.x += (this.baseX - this.x) * 0.05;
-        this.y += (this.baseY - this.y) * 0.05;
-        this.x += this.vx;
-        this.y += this.vy;
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const maxDistance = 150;
-        if (distance < maxDistance) {
-          const force = (maxDistance - distance) / maxDistance;
-          this.x -= dx * force * 0.03;
-          this.y -= dy * force * 0.03;
-        }
-        if (this.baseX < 0) this.baseX = canvas.width;
-        if (this.baseX > canvas.width) this.baseX = 0;
-        if (this.baseY < 0) this.baseY = canvas.height;
-        if (this.baseY > canvas.height) this.baseY = 0;
-        this.baseX += this.vx;
-        this.baseY += this.vy;
-      }
-
-      draw(ctx: CanvasRenderingContext2D, isDark: boolean) {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        const color = isDark ? "255, 44, 44" : "239, 68, 68";
-        ctx.fillStyle = `rgba(${color}, ${this.opacity})`;
-        ctx.fill();
-      }
-    }
 
     // Create particles
     const particles: Particle[] = [];
