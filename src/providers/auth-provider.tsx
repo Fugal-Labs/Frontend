@@ -19,6 +19,7 @@ export default function AuthProvider({
     if (!initialized) {
       fetchUser();
     }
+    // fetchUser is a stable action from the auth store and does not need to be in the deps array
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialized]);
 
@@ -34,6 +35,7 @@ export default function AuthProvider({
     if (!user) return;
 
     const REFRESH_INTERVAL = 14 * 60 * 1000; // 14 minutes
+    let isMounted = true;
 
     // setInterval waits 14 minutes before the first refresh, which is appropriate
     // since the token is fresh after login/registration
@@ -41,6 +43,9 @@ export default function AuthProvider({
       try {
         await refreshToken();
       } catch (error) {
+        if (!isMounted) {
+          return;
+        }
         console.error("[AuthProvider] Token refresh failed:", error);
       }
     }, REFRESH_INTERVAL);
