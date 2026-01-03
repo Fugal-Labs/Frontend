@@ -82,7 +82,13 @@ export const useAuthStore = create<AuthState>()(
       },
 
       refreshToken: async () => {
-        await refreshTokenApi();
+        try {
+          await refreshTokenApi();
+        } catch (error) {
+          console.error("[AuthStore] refreshToken failed:", error);
+          set({ user: null, initialized: true });
+          throw error;
+        }
       },
 
       logoutAll: async () => {
