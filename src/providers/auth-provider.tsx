@@ -18,6 +18,7 @@ export default function AuthProvider({
     if (!initialized) {
       fetchUser();
     }
+    // fetchUser is a stable action from the auth store and does not need to be in the deps array
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialized]);
 
