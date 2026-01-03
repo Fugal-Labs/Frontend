@@ -24,7 +24,7 @@ export const logoutUser = async (): Promise<boolean> => {
 
 export const getCurrentUser = async (): Promise<UserTypes.User> => {
   const response = await userApi.get("/me");
-  return response.data?.data?.user;
+  return response.data?.data;
 };
 
 export const logoutAllSessions = async (): Promise<boolean> => {
