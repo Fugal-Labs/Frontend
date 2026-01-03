@@ -7,14 +7,14 @@ export const registerUser = async (
   data: UserTypes.RegisterData
 ): Promise<UserTypes.User> => {
   const response = await userApi.post("/register", data);
-  return response.data?.data.user;
+  return response.data?.data?.user;
 };
 
 export const loginUser = async (
   data: UserTypes.LoginData
 ): Promise<UserTypes.User> => {
   const response = await userApi.post("/login", data);
-  return response.data?.data.user;
+  return response.data?.data?.user;
 };
 
 export const logoutUser = async (): Promise<boolean> => {
@@ -24,7 +24,7 @@ export const logoutUser = async (): Promise<boolean> => {
 
 export const getCurrentUser = async (): Promise<UserTypes.User> => {
   const response = await userApi.get("/me");
-  return response.data?.data;
+  return response.data?.data?.user;
 };
 
 export const logoutAllSessions = async (): Promise<boolean> => {
