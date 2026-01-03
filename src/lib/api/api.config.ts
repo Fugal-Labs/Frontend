@@ -1,5 +1,21 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
+const getBaseURL = () => {
+  if (!process.env.NEXT_PUBLIC_API_BASE_URL) {
+    console.warn(
+      "Warning: NEXT_PUBLIC_API_BASE_URL is not set. Defaulting to http://localhost:4000"
+    );
+  }
+  return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+};
+
+const defaultAxiosConfig = {
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true,
+};
+
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;
@@ -18,19 +34,10 @@ const processQueue = (error: Error | null = null) => {
 };
 
 export const createApiInstance = (suffix = "") => {
-  if (!process.env.NEXT_PUBLIC_API_BASE_URL) {
-    console.warn(
-      "Warning: NEXT_PUBLIC_API_BASE_URL is not set. Defaulting to http://localhost:4000"
-    );
-  }
+  const baseURL = getBaseURL();
   const api = axios.create({
-    baseURL:
-      (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000") +
-      suffix,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    withCredentials: true,
+    baseURL: baseURL + suffix,
+    ...defaultAxiosConfig,
   });
 
   // Response interceptor for handling 401 errors
@@ -71,13 +78,8 @@ export const createApiInstance = (suffix = "") => {
         try {
           // Attempt to refresh the token
           // Create a separate axios instance for refresh to avoid circular dependency
-          const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
-          await axios.post(`${baseURL}/users/refresh`, {}, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
-          });
+          const baseURL = getBaseURL();
+          await axios.post(`${baseURL}/users/refresh`, {}, defaultAxiosConfig);
           processQueue(null);
           return api(originalRequest);
         } catch (refreshError) {
