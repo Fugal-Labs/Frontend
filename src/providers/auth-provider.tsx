@@ -35,7 +35,8 @@ export default function AuthProvider({
 
     const REFRESH_INTERVAL = 14 * 60 * 1000; // 14 minutes
 
-    // Set up the interval with an initial delay since token is fresh after login
+    // setInterval waits 14 minutes before the first refresh, which is appropriate
+    // since the token is fresh after login/registration
     intervalRef.current = setInterval(async () => {
       try {
         await refreshToken();
