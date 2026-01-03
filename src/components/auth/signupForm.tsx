@@ -179,10 +179,21 @@ export default function SignupForm() {
 
       await registerUser(result.data);
       router.push("/");
-    } catch (error) {
+    } catch (error: unknown) {
+      let message = "Registration failed. Please try again.";
+      const err: any = error;
+
+      if (err?.response?.data?.message && typeof err.response.data.message === "string") {
+        message = err.response.data.message;
+      } else if (err instanceof Error && err.message) {
+        message = err.message;
+      } else if (typeof err?.message === "string") {
+        message = err.message;
+      }
+
       setError("otp", {
         type: "manual",
-        message: "Failed to verify OTP. Please try again.",
+        message,
       });
     }
   };
