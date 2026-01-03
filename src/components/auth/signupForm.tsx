@@ -15,6 +15,8 @@ import StepIndicator from "./StepIndicator";
 import OtpLoader from "./OtpLoader";
 import PasswordChecklist from "./passwordCheck";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { sendOtp } from "@/lib/api/otp.api";
+import { useAuthStore } from "@/store/auth-store";
 
 type InputProps = {
   label: string;
@@ -52,6 +54,7 @@ function Input({ label, error, ...props }: InputProps) {
 
 export default function SignupForm() {
   const router = useRouter();
+  const registerUser = useAuthStore((s) => s.registerUser);
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [sendingOtp, setSendingOtp] = useState(false);
@@ -99,10 +102,10 @@ export default function SignupForm() {
   }, [resendTimer]);
 
   // Resend OTP handler
-  const handleResendOtp = () => {
+  const handleResendOtp = (email: string) => {
     if (resendTimer === 0) {
       setResendTimer(30);
-      // Here you would trigger the resend OTP API call
+      sendOtp(email);
       setTimeout(() => {
         setIsResent(true);
       }, 500);
@@ -139,10 +142,19 @@ export default function SignupForm() {
       clearErrors(["password", "confirmPassword"]);
       setSendingOtp(true);
 
-      setTimeout(() => {
-        setSendingOtp(false);
+      const email = watch("email");
+      const otpSent = await sendOtp(email);
+
+      setSendingOtp(false);
+
+      if (otpSent) {
         setStep(3);
-      }, 5000);
+      } else {
+        setError("email", {
+          type: "manual",
+          message: "Failed to send OTP. Please try again.",
+        });
+      }
 
       return;
     }
@@ -153,18 +165,26 @@ export default function SignupForm() {
   };
 
   const onSubmit = async (data: SignupSchema) => {
-    const result = signupSchema.safeParse(data);
+    try {
+      const result = signupSchema.safeParse(data);
 
-    if (!result.success) {
-      result.error.issues.forEach((issue) => {
-        setError(issue.path[0] as keyof SignupSchema, {
-          message: issue.message,
+      if (!result.success) {
+        result.error.issues.forEach((issue) => {
+          setError(issue.path[0] as keyof SignupSchema, {
+            message: issue.message,
+          });
         });
-      });
-      return;
-    }
+        return;
+      }
 
-    console.log("FINAL SUBMIT:", result.data);
+      await registerUser(result.data);
+      router.push("/");
+    } catch (error) {
+      setError("otp", {
+        type: "manual",
+        message: "Failed to verify OTP. Please try again.",
+      });
+    }
   };
 
   return (
@@ -297,7 +317,7 @@ export default function SignupForm() {
               <button
                 type="button"
                 disabled={resendTimer > 0}
-                onClick={handleResendOtp}
+                onClick={() => handleResendOtp(watch("email"))}
                 className="mt-6 text-right text-sm text-secondary hover:underline cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 Resend OTP{resendTimer > 0 ? ` (${resendTimer})` : ""}

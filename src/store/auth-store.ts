@@ -6,6 +6,7 @@ import {
   registerUser as registerUserApi,
   loginUser as loginUserApi,
   refreshToken as refreshTokenApi,
+  logoutAllSessions as logoutAllSessionsApi,
 } from "@/lib/api/users.api";
 import { LoginData, RegisterData, User } from "@/types/user";
 
@@ -18,6 +19,7 @@ interface AuthState {
   fetchUser: () => Promise<void>;
   logout: () => Promise<void>;
   refreshToken: () => Promise<void>;
+  logoutAll: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -32,11 +34,18 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: true });
 
           const user = await getCurrentUser();
-          set({ user });
-        } catch {
-          set({ user: null });
+          set({ user, initialized: true });
+        } catch (error: unknown) {
+          // Always set user to null and mark as initialized on any error during fetchUser
+          set({ user: null, initialized: true });
+          console.log(
+            "[AuthStore] fetchUser failed:",
+            error instanceof Error && "response" in error
+              ? (error as { response?: { status?: number } }).response?.status
+              : "Unknown error"
+          );
         } finally {
-          set({ isLoading: false, initialized: true });
+          set({ isLoading: false });
         }
       },
 
@@ -73,17 +82,20 @@ export const useAuthStore = create<AuthState>()(
       },
 
       refreshToken: async () => {
-        try {
-          await refreshTokenApi();
-        } catch (error) {
-          set({ user: null });
-          throw error;
-        }
+        await refreshTokenApi();
+      },
+
+      logoutAll: async () => {
+        await logoutAllSessionsApi();
+        set({ user: null, initialized: true });
       },
     }),
     {
       name: "auth-store",
-      partialize: (state) => ({ user: state.user }),
+      partialize: (state) => ({
+        user: state.user,
+        initialized: state.initialized,
+      }),
     }
   )
 );

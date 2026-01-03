@@ -2,8 +2,8 @@
 import { NavItems } from "@/types/home";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "../ui/button";
-import { ThemeToggleButton } from "../ui/theme-toggle";
+import { Button } from "./ui/button";
+import { ThemeToggleButton } from "./ui/theme-toggle";
 import { useRouter } from "next/navigation";
 
 const navItems: NavItems[] = [
