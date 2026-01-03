@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/store/auth-store";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 export default function AuthLoadingProvider({
   children,
@@ -11,10 +11,11 @@ export default function AuthLoadingProvider({
   const { isLoading } = useAuthStore();
   const [mounted, setMounted] = useState(false);
 
-  // Prevent hydration mismatch
-  if (typeof window !== "undefined" && !mounted) {
+  // Prevent hydration mismatch - only set mounted in useEffect
+  useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
-  }
+  }, []);
 
   if (!mounted || isLoading) {
     return (
