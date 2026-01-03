@@ -30,6 +30,7 @@ export default function AuthProvider({
       intervalRef.current = null;
     }
 
+    // Only set up interval if user is logged in
     if (!user) return;
 
     const REFRESH_INTERVAL = 14 * 60 * 1000; // 14 minutes
