@@ -1,5 +1,4 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { userApi } from "./users.api";
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -71,7 +70,14 @@ export const createApiInstance = (suffix = "") => {
 
         try {
           // Attempt to refresh the token
-          await userApi.post("/refresh");
+          // Create a separate axios instance for refresh to avoid circular dependency
+          const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+          await axios.post(`${baseURL}/users/refresh`, {}, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          });
           processQueue(null);
           return api(originalRequest);
         } catch (refreshError) {
