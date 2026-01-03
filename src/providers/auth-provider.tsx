@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAuthStore } from "@/store/auth-store";
 
 export default function AuthProvider({
@@ -12,6 +12,7 @@ export default function AuthProvider({
   const initialized = useAuthStore((s) => s.initialized);
   const user = useAuthStore((s) => s.user);
   const refreshToken = useAuthStore((s) => s.refreshToken);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initial user fetch
   useEffect(() => {
@@ -23,11 +24,18 @@ export default function AuthProvider({
 
   // Periodic token refresh (every 14 minutes if user is logged in)
   useEffect(() => {
+    // Clear any existing interval first to prevent multiple intervals
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
     if (!user) return;
 
     const REFRESH_INTERVAL = 14 * 60 * 1000; // 14 minutes
 
-    const intervalId = setInterval(async () => {
+    // Set up the interval with an initial delay since token is fresh after login
+    intervalRef.current = setInterval(async () => {
       try {
         await refreshToken();
       } catch (error) {
@@ -36,7 +44,10 @@ export default function AuthProvider({
     }, REFRESH_INTERVAL);
 
     return () => {
-      clearInterval(intervalId);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
   }, [user, refreshToken]);
 
