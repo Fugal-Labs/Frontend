@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import AuthProvider from "@/providers/auth-provider";
+import AuthLoadingProvider from "@/providers/auth-loading-provider";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -79,7 +80,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.variable}>
         <AuthProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <AuthLoadingProvider>{children}</AuthLoadingProvider>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

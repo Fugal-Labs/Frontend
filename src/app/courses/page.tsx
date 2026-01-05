@@ -1,4 +1,4 @@
-import NavBar from "@/components/home/NavBar";
+import NavBar from "@/components/NavBar";
 import InteractiveBackground from "@/components/ui/interactive-bg";
 
 export default function CoursesPage() {
