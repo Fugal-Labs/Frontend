@@ -3,14 +3,15 @@ import { NavItems } from "@/types/home";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/auth-store";
 
 const HamburgerMenu = dynamic(() => import("./HamburgerMenu"), { ssr: false });
 const ThemeToggleButton = dynamic(
-  () => import("../ui/theme-toggle").then((m) => m.ThemeToggleButton),
+  () => import("./ui/theme-toggle").then((m) => m.ThemeToggleButton),
   { ssr: false }
 );
 
@@ -37,10 +38,44 @@ const navItems: NavItems[] = [
   },
 ];
 
+function AuthButtons() {
+  const { user, logout } = useAuthStore();
+  const router = useRouter();
+
+  return !user ? (
+    <>
+      {" "}
+      <Button
+        variant="outline"
+        className="cursor-pointer"
+        onClick={() => router.push("/login")}
+      >
+        Log In
+      </Button>
+      <Button
+        className="ml-2 cursor-pointer"
+        onClick={() => router.push("/signup")}
+      >
+        Sign Up
+      </Button>
+    </>
+  ) : (
+    <Button
+      variant="outline"
+      className="cursor-pointer"
+      onClick={() => {
+        logout();
+        router.push("/login");
+      }}
+    >
+      Logout
+    </Button>
+  );
+}
+
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-background/95 border border-b-accent p-4 shadow-md z-10">
@@ -73,19 +108,7 @@ export default function NavBar() {
         {/* Desktop Buttons */}
         <div className="hidden sm:flex flex-row gap-2 items-center">
           <ThemeToggleButton />
-          <Button
-            variant="outline"
-            className="cursor-pointer"
-            onClick={() => router.push("/login")}
-          >
-            Log In
-          </Button>
-          <Button
-            className="ml-2 cursor-pointer"
-            onClick={() => router.push("/signup")}
-          >
-            Sign Up
-          </Button>
+          <AuthButtons />
         </div>
         {/* Hamburger Icon for Mobile */}
         <button
