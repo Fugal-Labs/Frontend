@@ -1,4 +1,3 @@
-
 export default function About() {
   const features = [
     {
@@ -56,10 +55,6 @@ export default function About() {
             </div>
           ))}
         </div>
-
-  
-
-        
       </div>
     </section>
   );

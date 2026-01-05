@@ -37,7 +37,7 @@ export default function InteractiveBackground() {
       radius: Math.random() * 60 + 40, // smaller radius
       vx: (Math.random() - 0.5) * 1.2, // faster speed
       vy: (Math.random() - 0.5) * 1.2,
-      opacity:0.4
+      opacity: 0.4,
     });
 
     const orbs: Orb[] = Array.from({ length: 12 }, createOrb); // more orbs
